@@ -8,7 +8,7 @@ import {
 import { useUser, useAuth } from "@clerk/clerk-react";
 import toast, { Toaster } from "react-hot-toast";
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "https://skillforge-lms.onrender.com";
 
 const StarIcon = ({ filled = false, half = false, className = "" }) => {
   if (half)

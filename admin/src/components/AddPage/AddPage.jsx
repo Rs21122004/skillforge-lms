@@ -20,7 +20,7 @@ import {
 import { toast, Toaster } from "react-hot-toast";
 import { addPageStyles } from "../../assets/dummyStyles";
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "https://skillforge-lms.onrender.com";
 
 /** Helpers **/
 

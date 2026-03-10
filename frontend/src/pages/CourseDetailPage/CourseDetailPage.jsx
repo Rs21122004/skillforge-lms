@@ -19,7 +19,7 @@ import {
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { courseDetailStyles } from "../../assets/dummyStyles";
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "https://skillforge-lms.onrender.com";
 
 const fmtMinutes = (mins) => {
   const h = Math.floor((mins || 0) / 60);
