@@ -8,17 +8,15 @@ import Courses from "./pages/Courses/Courses";
 import { ArrowUp } from "lucide-react";
 import CourseDetailPageHome from "./pages/CourseDetailPageHome/CourseDetailPageHome";
 import CourseDetailPage from "./pages/CourseDetailPage/CourseDetailPage";
-import VerifyPaymentPage from "../VerifyPaymentPage";
+import VerifyPaymentPage from "./pages/VerifyPaymentPage/VerifyPaymentPage";
 import MyCoursePage from "./pages/MyCoursePage/MyCoursePage";
+import { useAuth } from "@clerk/clerk-react";
 
 // to protect the route
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
-  const isAuthenticated = () => {
-    const token = localStorage.getItem("token");
-    return Boolean(token);
-  };
-  if (!isAuthenticated()) {
+  const { isSignedIn } = useAuth();
+  if (!isSignedIn) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
   return children;
@@ -30,6 +28,8 @@ const ScrollToTopOnRouteChange = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [location]);
+
+  return null;
 };
 
 const ScrollTopButton = ({ threshold = 200, showOnMount = false }) => {
@@ -54,7 +54,7 @@ const ScrollTopButton = ({ threshold = 200, showOnMount = false }) => {
     <button
       onClick={scrollToTop}
       className={
-        "fixed right-6 bottom-6 z-50 p-2 rounded-full focus:outline-none focus:ring-sky-300" +
+        "fixed right-6 bottom-6 z-50 p-2 rounded-full focus:outline-none focus:ring-sky-300 " +
         "backdrop-blur-sm border border-white/20 shadow-lg cursor-pointer transition-transform"
       }
     >
@@ -73,7 +73,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/faculty" element={<Faculty />} />
         <Route path="/courses" element={<Courses />} />
-             <Route path="/mycourses" element={<MyCoursePage />} />
+        <Route path="/mycourses" element={<MyCoursePage />} />
 
         <Route
           path="/course/:id"
@@ -91,7 +91,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-                <Route path="/booking/success" element={<VerifyPaymentPage />} />
+        <Route path="/booking/success" element={<VerifyPaymentPage />} />
         <Route path="/booking/cancel" element={<VerifyPaymentPage />} />
       </Routes>
 

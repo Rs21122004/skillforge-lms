@@ -30,6 +30,6 @@ courseRouter.get("/:id", getCourseById);
 courseRouter.post("/", upload.single("image"), createCourse);
 courseRouter.delete("/:id", deleteCourse);
 courseRouter.post("/:courseId/rate", rateCourse);
-courseRouter.get("/:courseId/rating", getMyRating);
+courseRouter.get("/:courseId/my-rating", getMyRating);
 
 export default courseRouter;

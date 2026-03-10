@@ -6,8 +6,7 @@ import {
   coursePageCustomStyles,
 } from "../../assets/dummyStyles";
 import { useUser, useAuth } from "@clerk/clerk-react";
-import { Toaster } from "react-hot-toast";
-import { toast, ToastContainer, Slide } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
@@ -316,22 +315,12 @@ const CoursePage = () => {
   const remainingCount = Math.max(0, filteredCourses.length - VISIBLE_COUNT);
 
   const showLoginToast = () => {
-    toast.error("Please login to access this course", {
-      position: "top-right",
-      transition: Slide,
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "dark",
-    });
+    toast.error("Please login to access this course");
   };
 
-  // navigate to course detail — block if no token, show toast
+  // navigate to course detail — block if not signed in, show toast
   const openCourse = (courseId) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    if (!isSignedIn) {
       showLoginToast();
       return;
     }
@@ -546,12 +535,7 @@ const CoursePage = () => {
           </>
         )}
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        transition={Slide}
-        theme="dark"
-      />
+
       <style>{coursePageCustomStyles}</style>
     </div>
   );

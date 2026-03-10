@@ -3,7 +3,7 @@ import { Star, User, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { homeCoursesStyles } from "../../assets/dummyStyles";
 import { useUser, useAuth } from "@clerk/clerk-react";
-import { toast, ToastContainer, Slide } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 // Use env var or fallback
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
@@ -88,18 +88,11 @@ const HomeCourses = () => {
   }, []);
 
   const showLoginToast = () => {
-    toast.error("Please login to access this course", {
-      position: "top-right",
-      transition: Slide,
-      autoClose: 3000,
-      theme: "dark",
-    });
+    toast.error("Please login to access this course");
   };
 
   const handleCourseClick = (id) => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
+    if (!isSignedIn) {
       showLoginToast();
       return;
     }
@@ -108,15 +101,8 @@ const HomeCourses = () => {
   };
 
   const handleBrowseClick = () => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      toast.error("Please login to access courses", {
-        position: "top-right",
-        transition: Slide,
-        autoClose: 3000,
-        theme: "dark",
-      });
+    if (!isSignedIn) {
+      toast.error("Please login to access courses");
       return;
     }
 
@@ -236,8 +222,8 @@ const HomeCourses = () => {
                   setHoverRatings((s) => ({ ...s, [course.id]: 0 }))
                 }
                 className={`${homeCoursesStyles.starButton} ${filled
-                    ? homeCoursesStyles.starButtonActive
-                    : homeCoursesStyles.starButtonInactive
+                  ? homeCoursesStyles.starButtonActive
+                  : homeCoursesStyles.starButtonInactive
                   }`}
                 style={{ background: "transparent" }}
               >
@@ -395,12 +381,7 @@ const HomeCourses = () => {
           </>
         )}
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        theme="dark"
-        transition={Slide}
-      />
+      <Toaster position="top-right" />
       <style jsx>{homeCoursesStyles.animations}</style>
     </div>
   );
