@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { dashboardStyles } from "../../assets/dummyStyles"; // adjust path if needed
 
-const API_BASE = "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 const fmtCurrency = (n) => {
   if (n == null) return "₹0";
@@ -122,8 +122,8 @@ const DashboardPage = () => {
               sale != null
                 ? fmtCurrency(sale)
                 : orig != null
-                ? fmtCurrency(orig)
-                : "Free";
+                  ? fmtCurrency(orig)
+                  : "Free";
           } else if (c.pricingType && c.pricingType !== "free") {
             priceDisplay = "₹0";
           }

@@ -22,7 +22,7 @@ export default function ListPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const API_BASE = "http://localhost:4000";
+  const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
   // Build image URL (backend serves /uploads statically)
   const getImageUrl = (imagePath) => {
@@ -130,10 +130,10 @@ export default function ListPage() {
       let arr = Array.isArray(raw)
         ? raw
         : Array.isArray(raw.items)
-        ? raw.items
-        : Array.isArray(raw.courses)
-        ? raw.courses
-        : [];
+          ? raw.items
+          : Array.isArray(raw.courses)
+            ? raw.courses
+            : [];
 
       // Defensive nested case
       if (!Array.isArray(arr) && raw.items && Array.isArray(raw.items.items)) {
@@ -165,23 +165,23 @@ export default function ListPage() {
         // ensure each lecture/chapter durations normalized too (not altering original shape but helpful)
         const normalizedLectures = Array.isArray(lecturesArr)
           ? lecturesArr.map((lec) => ({
-              ...lec,
-              _parsedDurationMinutes:
-                lec.durationMin ??
-                lec.totalMinutes ??
-                parseDuration(lec.duration) ??
-                0,
-              chapters: Array.isArray(lec.chapters)
-                ? lec.chapters.map((ch) => ({
-                    ...ch,
-                    _parsedDurationMinutes:
-                      ch.durationMin ??
-                      ch.totalMinutes ??
-                      parseDuration(ch.duration) ??
-                      0,
-                  }))
-                : [],
-            }))
+            ...lec,
+            _parsedDurationMinutes:
+              lec.durationMin ??
+              lec.totalMinutes ??
+              parseDuration(lec.duration) ??
+              0,
+            chapters: Array.isArray(lec.chapters)
+              ? lec.chapters.map((ch) => ({
+                ...ch,
+                _parsedDurationMinutes:
+                  ch.durationMin ??
+                  ch.totalMinutes ??
+                  parseDuration(ch.duration) ??
+                  0,
+              }))
+              : [],
+          }))
           : [];
 
         return {
@@ -353,11 +353,10 @@ export default function ListPage() {
                             className={listStyles.courseBadge(
                               course.courseType
                             )}
-                            aria-label={`Course type: ${
-                              course.courseType === "top"
+                            aria-label={`Course type: ${course.courseType === "top"
                                 ? "Top Course"
                                 : "Regular Course"
-                            }`}
+                              }`}
                             title={
                               course.courseType === "top"
                                 ? "Top Course"
@@ -490,7 +489,7 @@ export default function ListPage() {
                                         <span>
                                           {formatMinutes(
                                             lecture._parsedDurationMinutes ??
-                                              parseDuration(lecture.duration)
+                                            parseDuration(lecture.duration)
                                           )}
                                         </span>
                                       </div>
@@ -501,9 +500,8 @@ export default function ListPage() {
                                 <EyeClosed
                                   className={listStyles.lectureToggleIcon(
                                     expandedLectures[
-                                      `${course.id}-${
-                                        lecture.id || lecture._id
-                                      }`
+                                    `${course.id}-${lecture.id || lecture._id
+                                    }`
                                     ]
                                   )}
                                 />
@@ -513,86 +511,86 @@ export default function ListPage() {
                             {expandedLectures[
                               `${course.id}-${lecture.id || lecture._id}`
                             ] && (
-                              <div className={listStyles.expandedLecture}>
-                                <div className={listStyles.chapterList}>
-                                  {(lecture.chapters || []).map((chapter) => (
-                                    <div
-                                      key={chapter.id || chapter._id}
-                                      className={listStyles.chapterCard}
-                                    >
+                                <div className={listStyles.expandedLecture}>
+                                  <div className={listStyles.chapterList}>
+                                    {(lecture.chapters || []).map((chapter) => (
                                       <div
-                                        className={listStyles.chapterContent}
+                                        key={chapter.id || chapter._id}
+                                        className={listStyles.chapterCard}
                                       >
                                         <div
-                                          className={listStyles.chapterHeader}
+                                          className={listStyles.chapterContent}
                                         >
                                           <div
-                                            className={listStyles.chapterIcon}
+                                            className={listStyles.chapterHeader}
                                           >
-                                            <Eye
-                                              className={
-                                                listStyles.chapterIconSvg
-                                              }
-                                            />
-                                          </div>
-                                          <div
-                                            className={
-                                              listStyles.chapterDetails
-                                            }
-                                          >
-                                            <a
-                                              href={chapter.videoUrl}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              className={
-                                                listStyles.chapterTitle
-                                              }
-                                            >
-                                              <h6>{chapter.name}</h6>
-                                            </a>
-                                            <p
-                                              className={
-                                                listStyles.chapterTopic
-                                              }
-                                            >
-                                              {chapter.topic}
-                                            </p>
-
                                             <div
-                                              className={listStyles.chapterMeta}
+                                              className={listStyles.chapterIcon}
                                             >
-                                              <span
+                                              <Eye
                                                 className={
-                                                  listStyles.chapterDuration
+                                                  listStyles.chapterIconSvg
                                                 }
-                                              >
-                                                <Clock className="w-3 h-3" />
-                                                {formatMinutes(
-                                                  chapter._parsedDurationMinutes ??
-                                                    parseDuration(
-                                                      chapter.duration
-                                                    )
-                                                )}
-                                              </span>
+                                              />
+                                            </div>
+                                            <div
+                                              className={
+                                                listStyles.chapterDetails
+                                              }
+                                            >
                                               <a
                                                 href={chapter.videoUrl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className={
-                                                  listStyles.chapterVideoLink
+                                                  listStyles.chapterTitle
                                                 }
                                               >
-                                                {chapter.videoUrl}
+                                                <h6>{chapter.name}</h6>
                                               </a>
+                                              <p
+                                                className={
+                                                  listStyles.chapterTopic
+                                                }
+                                              >
+                                                {chapter.topic}
+                                              </p>
+
+                                              <div
+                                                className={listStyles.chapterMeta}
+                                              >
+                                                <span
+                                                  className={
+                                                    listStyles.chapterDuration
+                                                  }
+                                                >
+                                                  <Clock className="w-3 h-3" />
+                                                  {formatMinutes(
+                                                    chapter._parsedDurationMinutes ??
+                                                    parseDuration(
+                                                      chapter.duration
+                                                    )
+                                                  )}
+                                                </span>
+                                                <a
+                                                  href={chapter.videoUrl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className={
+                                                    listStyles.chapterVideoLink
+                                                  }
+                                                >
+                                                  {chapter.videoUrl}
+                                                </a>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
                           </div>
                         ))}
                       </div>

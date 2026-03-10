@@ -6,7 +6,7 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import { toast, ToastContainer, Slide } from "react-toastify";
 
 // Use env var or fallback
-const API_BASE = "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 const HomeCourses = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const HomeCourses = () => {
   useEffect(() => {
     try {
       localStorage.setItem("userCourseRatings", JSON.stringify(userRatings));
-    } catch {}
+    } catch { }
   }, [userRatings]);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const HomeCourses = () => {
     };
   }, []);
 
- const showLoginToast = () => {
+  const showLoginToast = () => {
     toast.error("Please login to access this course", {
       position: "top-right",
       transition: Slide,
@@ -107,7 +107,7 @@ const HomeCourses = () => {
     navigate(`/course/${id}`);
   };
 
-const handleBrowseClick = () => {
+  const handleBrowseClick = () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -170,11 +170,11 @@ const handleBrowseClick = () => {
         prev.map((c) =>
           c.id === courseId
             ? {
-                ...c,
-                avgRating: typeof avg === "number" ? avg : c.avgRating,
-                totalRatings:
-                  typeof total === "number" ? total : c.totalRatings,
-              }
+              ...c,
+              avgRating: typeof avg === "number" ? avg : c.avgRating,
+              totalRatings:
+                typeof total === "number" ? total : c.totalRatings,
+            }
             : c
         )
       );
@@ -235,11 +235,10 @@ const handleBrowseClick = () => {
                 onMouseLeave={() =>
                   setHoverRatings((s) => ({ ...s, [course.id]: 0 }))
                 }
-                className={`${homeCoursesStyles.starButton} ${
-                  filled
+                className={`${homeCoursesStyles.starButton} ${filled
                     ? homeCoursesStyles.starButtonActive
                     : homeCoursesStyles.starButtonInactive
-                }`}
+                  }`}
                 style={{ background: "transparent" }}
               >
                 <Star
@@ -315,17 +314,15 @@ const handleBrowseClick = () => {
 
                     <div className={homeCoursesStyles.courseInfo}>
                       <h3
-                        className={`${course || ""} ${
-                          homeCoursesStyles.courseName
-                        }`}
+                        className={`${course || ""} ${homeCoursesStyles.courseName
+                          }`}
                       >
                         {courseItem.name}
                       </h3>
 
                       <div
-                        className={`${detail || ""} ${
-                          homeCoursesStyles.teacherInfo
-                        }`}
+                        className={`${detail || ""} ${homeCoursesStyles.teacherInfo
+                          }`}
                       >
                         <User
                           size={15}

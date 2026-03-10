@@ -9,7 +9,7 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import { Toaster } from "react-hot-toast";
 import { toast, ToastContainer, Slide } from "react-toastify";
 
-const API_BASE = "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 const StarIcon = ({ filled = false, half = false, className = "" }) => {
   if (half)
@@ -114,7 +114,7 @@ const CoursePage = () => {
   useEffect(() => {
     try {
       localStorage.setItem("userCourseRatings", JSON.stringify(ratings));
-    } catch {}
+    } catch { }
   }, [ratings]);
 
   // Fetch public courses
@@ -158,8 +158,8 @@ const CoursePage = () => {
             typeof c.avgRating === "number"
               ? c.avgRating
               : typeof c.rating === "number"
-              ? c.rating
-              : parseFloat(c.rating) || 0,
+                ? c.rating
+                : parseFloat(c.rating) || 0,
           totalRatings:
             typeof c.totalRatings === "number"
               ? c.totalRatings
@@ -178,7 +178,7 @@ const CoursePage = () => {
               try {
                 const token = await getToken().catch(() => null);
                 if (token) headers.Authorization = `Bearer ${token}`;
-              } catch (e) {}
+              } catch (e) { }
               const r = await fetch(
                 `${API_BASE}/api/course/${encodeURIComponent(
                   course.id
@@ -261,11 +261,11 @@ const CoursePage = () => {
           prev.map((c) =>
             String(c.id) === String(courseId)
               ? {
-                  ...c,
-                  avgRating: typeof avg === "number" ? avg : c.avgRating,
-                  totalRatings:
-                    typeof total === "number" ? total : c.totalRatings,
-                }
+                ...c,
+                avgRating: typeof avg === "number" ? avg : c.avgRating,
+                totalRatings:
+                  typeof total === "number" ? total : c.totalRatings,
+              }
               : c
           )
         );
@@ -315,7 +315,7 @@ const CoursePage = () => {
     : filteredCourses.slice(0, VISIBLE_COUNT);
   const remainingCount = Math.max(0, filteredCourses.length - VISIBLE_COUNT);
 
- const showLoginToast = () => {
+  const showLoginToast = () => {
     toast.error("Please login to access this course", {
       position: "top-right",
       transition: Slide,
@@ -546,7 +546,7 @@ const CoursePage = () => {
           </>
         )}
       </div>
-     <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={3000}
         transition={Slide}

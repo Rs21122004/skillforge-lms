@@ -20,7 +20,7 @@ import {
 import { toast, Toaster } from "react-hot-toast";
 import { addPageStyles } from "../../assets/dummyStyles";
 
-const API_BASE = "http://localhost:4000";
+const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 /** Helpers **/
 
@@ -81,7 +81,7 @@ const computeCourseTotals = (lectures = []) => {
       lectureTotalMinutes = Math.max(
         0,
         (Number(lec.duration.hours) || 0) * 60 +
-          (Number(lec.duration.minutes) || 0)
+        (Number(lec.duration.minutes) || 0)
       );
     }
 
@@ -733,10 +733,10 @@ const AddPage = () => {
                 </div>
                 {(formData.totalDuration.hours ||
                   formData.totalDuration.minutes) && (
-                  <p className={addPageStyles.durationFormatted}>
-                    Formatted: {formatTotalDuration()}
-                  </p>
-                )}
+                    <p className={addPageStyles.durationFormatted}>
+                      Formatted: {formatTotalDuration()}
+                    </p>
+                  )}
               </div>
 
               <div className={addPageStyles.inputContainer}>
@@ -1006,9 +1006,8 @@ const AddPage = () => {
               <div className="absolute inset-0 bg-linear-to-r from-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               {loading
                 ? "Creating..."
-                : `Create ${
-                    formData.courseType === "top" ? "Top" : "Regular"
-                  } Course`}
+                : `Create ${formData.courseType === "top" ? "Top" : "Regular"
+                } Course`}
             </button>
           </div>
         </form>
